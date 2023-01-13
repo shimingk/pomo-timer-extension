@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Pomo-Timer",
+    "description": "utilizes the Pomodoro technique",
+    "version": "1.0",
+    "action": {
+        "default_popup": "popup/popup.html",
+        "default_icon": "images/favicon-32x32.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*"
+            ],
+            "js": [
+                "content-scripts/block.js"
+            ],
+            "css": [
+                "content-scripts/block.css"
+            ]
+        }
+    ]
+}
