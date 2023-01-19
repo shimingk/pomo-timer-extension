@@ -7,20 +7,10 @@ body {
 
 .popup-title {
   font-weight: 900;
-  background-color: rgb(208, 58, 138);
-  color: white;
+  background-color: #eee555;
+  color: black;
   width: 100%;
   padding: 5px;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.2rem;
-}
-
-.checkbox-container input[type="checkbox"] {
-  margin-left: 1rem;
 }
 
 .popup-content {
@@ -30,4 +20,8 @@ body {
 
 button {
   width: 100%;
+}
+
+.start-timer {
+  font: bolder;
 }
