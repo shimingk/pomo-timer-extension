@@ -1,60 +1,85 @@
+'use strict';
+
 const startButton = document.getElementById("start-btn");
+const resetButton = document.getElementById("reset-btn");
+const breakButton = document.getElementById("break-btn");
+const demoButton = document.getElementById("start-demo");
+// const minutes = 0.25;  // 0.25 min = 15s, 0.5 min = 30s, 2 min = 120s, 5 min = 300s, 25 min = 1500s 
+// 1000ms = 1s 
+const convert = 60;
+// let time = document.getElementById("time");
 
-// Add event listeners to the checkbox and button
-// checkbox.addEventListener("change", (e) => updateContentScript(false));
-startButton.addEventListener("click", swapBtnText);
-// startButton.addEventListener("click", ());
+// Add event listeners to the buttons
+startButton.addEventListener("click", setAlarm);
+resetButton.addEventListener("click", clearAlarm);
+breakButton.addEventListener("click", setAlarm);
+demoButton.addEventListener("click", setAlarm);
 
-function swapBtnText () {
-  if (startButton.innerHTML === "Pause") {
-    startButton.innerHTML = "Start";
+function setAlarm(event) {
+  let minutes = parseFloat(event.target.value);
+  let timeSelection = "Currently: ";
+  if (minutes < 1) {
+    timeSelection = timeSelection + (minutes * convert) + " sec of focus work time";
+  } else if (minutes === 5) {
+    timeSelection = timeSelection + " on break - " + minutes + " min";
   } else {
-    startButton.innerHTML = "Pause";
-    // startTimer()?
+    timeSelection = timeSelection + minutes + " min of focus work time";
   }
-  startButton.classList.toggle("start-timer");
+  document.getElementById("current").innerHTML = timeSelection;
+  chrome.action.setBadgeText({text: 'ON'});
+  chrome.alarms.create({delayInMinutes: minutes});
+  chrome.storage.sync.set({minutes: minutes});
+  console.log("Alarm set!");
+  // startTimer(minutes);
+}
+  
+function clearAlarm() {
+  chrome.action.setBadgeText({text: ''});
+  chrome.alarms.clearAll();
+  document.getElementById("current").innerHTML = "";
+  console.log("Alarm cleared!");
+  // if (interval !== null) {
+  //   clearInterval(interval);
+  //   time.innerHTML = "00:00";
+  // }
 }
 
-// const minutes = 25;
-// const sec = 1000;  // 1000ms = 1s
-// const convert = 60;
-// let interval;
-// function timer(minutes) {
-//   let duration = minutes * convert * sec;
-//   interval = setInterval(function() {
-//     duration--;
-//     if (!duration) {
-//       clearInterval(interval);
-//       alert("🚨Nobody cares, go to work⏰")
-//     }
-//   }, 1000);
-// }
-// async function updateContentScript(addBlock) {
-//   console.log("yurr");
-//   // Sends a message to the content script with an object that has the
-//   // current value of the checkbox and a boolean (whether to add a block)
-//   const message = { enable: checkbox.checked, addBlock: addBlock };
-//   const [tab] = await chrome.tabs.query({
-//     active: true,
-//     lastFocusedWindow: true,
-//   });
-//   //const response = await chrome.tabs.sendMessage(tab.id, message);
-//   // You can do something with response from the content script here
-//   //console.log(response);
-//   chrome.tabs.sendMessage(tab.id, message);
-//   console.log("Yo!");
+// function swapBtnText () {
+//   if (startButton.innerHTML === "Pause") {
+//     startButton.innerHTML = "Start";
+//   } else {
+//     startButton.innerHTML = "Pause";
+//     startTimer(minutes);
+//   }
+//   startButton.classList.toggle("start-timer");
 // }
 
-// let seconds = 0;
 // let interval;
-// function pomodoro(mins) {
-//    seconds = mins*60 || 0;     
-//    interval = setInterval(function() {
- 
-//         seconds--;
-//         if(!seconds){
-//              clearInterval(interval); 
-//              alert("🚨 It is Cool 😎. I wish you could share ");
-//         }
-//    },1000)
+// // let timeLeft = minutes * convert;
+// // time.innerHTML = timeLeft;
+// function startTimer(minutes) {
+//   let timer = minutes * convert;
+//   let min;
+//   let sec;
+//   interval = setInterval(function() {
+//     min = parseInt(timer / convert, 10);
+//     sec = parseInt(timer % convert, 10);
+
+//     min = min < 10 ? "0" + min : min;
+//     sec = sec < 10 ? "0" + sec : sec;
+//     time.innerHTML = min + ":" + sec;
+//     if (--timer < 0) {
+//       timer = minutes;
+//     }
+//     console.log("Time left: " + minutes);
+//     if (minutes === 0) {
+//       clearInterval(interval);
+//     }
+//     // console.log("Time left: " + timeLeft);  // update #time
+//     // timeLeft--;
+//     // if (!timeLeft) {
+//     //   clearInterval(interval);
+//     //   // alert("Break Time!");
+//     // }
+//   }, 1000);  // 1000ms = 1s countdown decrement
 // }

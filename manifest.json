@@ -3,6 +3,14 @@
     "name": "Pomo-Timer",
     "description": "utilizes the Pomodoro technique",
     "version": "1.0",
+    "permissions": [
+        "alarms",
+        "notifications",
+        "storage"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
     "action": {
         "default_popup": "popup/popup.html",
         "default_icon": "images/favicon-32x32.png"
